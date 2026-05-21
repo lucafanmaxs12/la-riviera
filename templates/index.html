@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog Teme</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #f0f4f8; }
+        h1 { color: #2d3748; text-align: center; }
+        .form-box { background: white; padding: 20px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 8px; margin: 6px 0 12px 0; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; }
+        button { background: #4299e1; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #3182ce; }
+        .tema { background: white; padding: 15px 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .tema.rezolvata { background: #c6f6d5; }
+        .tema-info h3 { margin: 0 0 5px 0; color: #2d3748; }
+        .tema-info p { margin: 0; color: #718096; font-size: 14px; }
+        .termen { color: #e53e3e; font-weight: bold; }
+        .btn-rezolvat { background: #48bb78; margin-right: 8px; padding: 6px 12px; font-size: 14px; }
+        .btn-rezolvat:hover { background: #38a169; }
+        .btn-sterge { background: #fc8181; padding: 6px 12px; font-size: 14px; }
+        .btn-sterge:hover { background: #e53e3e; }
+        .gol { text-align: center; color: #a0aec0; font-size: 18px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+    <h1>📚 Catalog Teme</h1>
+
+    <div class="form-box">
+        <h2>Adaugă temă nouă</h2>
+        <form action="/adauga" method="POST">
+            <label>Materie:</label>
+            <input type="text" name="materie" placeholder="ex: Matematică" required>
+            <label>Descriere temă:</label>
+            <textarea name="descriere" rows="3" placeholder="ex: Pagina 45, exercițiile 1-5" required></textarea>
+            <label>Termen limită:</label>
+            <input type="date" name="termen" required>
+            <button type="submit">➕ Adaugă temă</button>
+        </form>
+    </div>
+
+    {% if teme %}
+        {% for t in teme %}
+        <div class="tema {% if t.rezolvata %}rezolvata{% endif %}">
+            <div class="tema-info">
+                <h3>📖 {{ t.materie }}</h3>
+                <p>{{ t.descriere }}</p>
+                <p class="termen">⏰ Termen: {{ t.termen }}</p>
+                {% if t.rezolvata %}<p style="color: #38a169;">✅ Rezolvată</p>{% endif %}
+            </div>
+            <div>
+                <a href="/rezolvata/{{ t.id }}"><button class="btn-rezolvat">✔ Rezolvat</button></a>
+                <a href="/sterge/{{ t.id }}"><button class="btn-sterge">🗑 Șterge</button></a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="gol">Nu ai nicio temă adăugată încă. 🎉</p>
+    {% endif %}
+
+</body>
+</html>
